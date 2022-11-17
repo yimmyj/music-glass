@@ -2,11 +2,14 @@ import {useEffect,useState} from 'react';
 import './App.css';
 import axios from 'axios';
 
+const querystring = require('querystring-es3');
+
 function App() {
   const CLIENT_ID = "f7c40db261574146a1341b89f2d76bfb";
   const REDIRECT_URI = "http://localhost:3000/";
   const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
   const RESPONSE_TYPE = "token";
+  const SCOPE = "user-read-private user-read-email user-top-read";
   const SHOW_DIALOG = true;
 
   const [token, setToken] = useState("")
@@ -61,11 +64,13 @@ function App() {
   }
 
   const getGenres = async (token) => {
-    const {data} = await axios.get("https://api.spotify.com/v1/recommendations/available-genre-seeds", {
+    //https://api.spotify.com/v1/recommendations/available-genre-seeds
+    const {data} = await axios.get("https://api.spotify.com/v1/me/top/tracks", {
         headers: {
             Authorization: `Bearer ${token}`
         }
     })
+    console.log(data);
     setGenres(data["genres"])
   }
 
@@ -91,12 +96,20 @@ function App() {
     }
   }
 
+  const queryParams = querystring.stringify({
+    client_id: CLIENT_ID,
+    response_type: RESPONSE_TYPE,
+    redirect_uri: REDIRECT_URI,
+    show_dialog: SHOW_DIALOG,
+    scope: SCOPE
+  });
+
   return (
     <div className="App">
         <header className="App-header">
             <h1>Music Glass</h1>
             {!token ?
-                <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&show_dialog=${SHOW_DIALOG}`}>Login
+                <a href={`${AUTH_ENDPOINT}?${queryParams}`}>Login
                     to Spotify</a>
                 : <button onClick={logout}>Logout</button>}
             <button disabled={!token} onClick={findUser}>Find User</button>
