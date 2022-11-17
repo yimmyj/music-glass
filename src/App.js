@@ -2,7 +2,7 @@ import {useEffect,useState} from 'react';
 import './App.css';
 import axios from 'axios';
 
-const querystring = require('querystring-es3');
+const querystring = require('querystring');
 
 function App() {
   const CLIENT_ID = "f7c40db261574146a1341b89f2d76bfb";
