@@ -71,7 +71,7 @@ function App() {
         }
     })
     console.log(data);
-    setGenres(data["genres"])
+    setGenres(data)
   }
 
   const renderGenres = () => {
@@ -80,15 +80,15 @@ function App() {
     }
     else{
       let options = []
-      for(let i=0; i<genres.length; i++){
-        options.push({value: "value-"+i, text: genres[i]})
+      for(let i=0; i<genres.items.length; i++){
+        options.push({key: i, name: genres.items[i].name, artist: genres.items[i].artists[0].name})
       }
       return (
         <div>
           <label>Genre List</label><br></br>
           <select>
             {options.map(item => {
-                return (<option key={item.value} value={item.value}>{item.text}</option>);
+                return (<option key={item.key} value={item.key}>{item.name + " by "+ item.artist}</option>);
             })}
           </select>
         </div>
