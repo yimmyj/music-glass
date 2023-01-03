@@ -158,16 +158,18 @@ function App() {
               })}
             </select>
 
-           <textarea
-                     type="text"
+           <input
+                     type="number"
                      value={mins}
                      placeholder="minutes"
+                     min = "0" max = "59"
                      onChange={(e) => setMins(e.target.value)}
                    />
-           <textarea
-                     type="text"
+           <input
+                     type="number"
                      value={secs}
                      placeholder="seconds"
+                     min = "0" max = "59"
                      onChange={(e) => setSecs(e.target.value)}
                               />
 
@@ -233,9 +235,28 @@ function App() {
           return(pickedSongs);
   }
 
- const createActualPlaylist = async(mins, secs, usableSongs) => {
+  const shuffle = (array) => {
+    let currentIndex = array.length,  randomIndex;
+
+    // While there remain elements to shuffle.
+    while (currentIndex != 0) {
+
+      // Pick a remaining element.
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
+    }
+
+    return array;
+  }
+
+ const createActualPlaylist = async(mins, secs, tracks) => {
  //UsableSongs should be an array with key=duration: value= song length in seconds,
  //key=uri: value = spotify URI of the track
+    let usableSongs = shuffle(tracks);
     console.log("Inside create actual playlist");
     let time = 60 * Number(mins) + Number(secs);
     if (secs < 10) secs = '0'+secs;
