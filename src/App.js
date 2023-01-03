@@ -14,7 +14,6 @@ function App() {
   const RESPONSE_TYPE = "token";
   const SCOPE = "user-read-private user-read-email user-top-read user-read-recently-played playlist-modify-private playlist-modify-public";
   const SHOW_DIALOG = true;
-  let topTracks = [];
 
   const [token, setToken] = useState("")
   const [userID, setID] = useState("")
@@ -132,7 +131,6 @@ function App() {
         return;
       }
       else{
-        let sampleTime = 1200;
         let options = []
         //let topTracks = []
         let favoritesInfo = []
@@ -239,7 +237,7 @@ function App() {
     let currentIndex = array.length,  randomIndex;
 
     // While there remain elements to shuffle.
-    while (currentIndex != 0) {
+    while (currentIndex !== 0) {
 
       // Pick a remaining element.
       randomIndex = Math.floor(Math.random() * currentIndex);
@@ -254,6 +252,10 @@ function App() {
   }
 
  const createActualPlaylist = async(mins, secs, tracks) => {
+    if (mins > 59 || mins < 0 || secs < 0 || secs > 59){
+    alert("Not valid time");
+    return;
+    }
  //UsableSongs should be an array with key=duration: value= song length in seconds,
  //key=uri: value = spotify URI of the track
     let usableSongs = shuffle(tracks);
@@ -267,6 +269,11 @@ function App() {
       }
 
      let pickedSongs = generatePlaylist(time, trackLengths);
+
+     if (pickedSongs.length === 0){
+     alert("Time picked is too short!");
+     return;
+     }
 
      let pickedSongsString = usableSongs[pickedSongs[0]].uri;
 
