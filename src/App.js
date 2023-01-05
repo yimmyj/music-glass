@@ -259,7 +259,6 @@ function App() {
  //UsableSongs should be an array with key=duration: value= song length in seconds,
  //key=uri: value = spotify URI of the track
     let usableSongs = shuffle(tracks);
-    console.log("Inside create actual playlist");
     let time = 60 * Number(mins) + Number(secs);
     if (secs < 10) secs = '0'+secs;
 
@@ -292,7 +291,7 @@ function App() {
 
      let playlistData = playlistRes.data;
      let playlist_id = playlistData.id;
-     let sampleURL = "https://api.spotify.com/v1/playlists/3cEYpjA9oz9GiPac4AsH4n/tracks?uris=spotify%3Atrack%3A4iV5W9uYEdYUVa79Axb7Rh%2Cspotify%3Atrack%3A1301WleyT98MSxVHPZCA6M";
+
 
      const addSongsRes = await axios.post("https://api.spotify.com/v1/playlists/"+playlist_id+"/tracks?uris="+pickedSongsString, {}, {
                         headers: {
