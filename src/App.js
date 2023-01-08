@@ -22,6 +22,7 @@ function App() {
   const [favorites, setFavorites] = useState([])
   const [mins, setMins] = useState(null);
   const [secs, setSecs] = useState(null);
+  const [playlistLink, setPlaylist] = useState("https://open.spotify.com/embed/album/2Yy84EeclNVwFDem6yIB2s?utm_source=generator");
 
   useEffect(() => {
     const hash = window.location.hash;
@@ -172,6 +173,7 @@ function App() {
                               />
 
             <button id="button3" onClick={() => createActualPlaylist(mins, secs, favoritesInfo)}> Create Playlist </button>
+
           </div>
         )
       }
@@ -291,6 +293,8 @@ function App() {
 
      let playlistData = playlistRes.data;
      let playlist_id = playlistData.id;
+     setPlaylist("https://open.spotify.com/embed/album/"+playlist_id+"?utm_source=generator");
+     console.log("PlaylistLink is: " + playlistLink);
 
 
      const addSongsRes = await axios.post("https://api.spotify.com/v1/playlists/"+playlist_id+"/tracks?uris="+pickedSongsString, {}, {
@@ -313,7 +317,10 @@ function App() {
                 : <><button onClick={logout}>Logout</button>
                 <SelectTerm />
                 <button id="findUserButton" onClick={findUser}>Find User</button>
-                <button id="loadInfoButton" onClick={loadEverything}>Load Information</button></>
+                <button id="loadInfoButton" onClick={loadEverything}>Load Information</button>
+                <iframe src={playlistLink}
+                                        width="100%" height="380" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                                        loading="lazy"></iframe></>
                 }
                 {renderRecent()}
                 {renderFavorites()}
