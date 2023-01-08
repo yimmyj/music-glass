@@ -293,16 +293,13 @@ function App() {
 
      let playlistData = playlistRes.data;
      let playlist_id = playlistData.id;
-     setPlaylist("https://open.spotify.com/embed/album/"+playlist_id+"?utm_source=generator");
-     console.log("PlaylistLink is: " + playlistLink);
-
-
      const addSongsRes = await axios.post("https://api.spotify.com/v1/playlists/"+playlist_id+"/tracks?uris="+pickedSongsString, {}, {
                         headers: {
                             Authorization: `Bearer ${token}`
                     }})
 
-     console.log(addSongsRes.data);
+     setPlaylist("https://open.spotify.com/embed/playlist/"+playlist_id+"?utm_source=generator");
+     console.log("PlaylistLink is: " + playlistLink);
  }
 
 
