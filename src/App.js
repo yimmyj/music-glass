@@ -60,9 +60,7 @@ function App() {
 
   const loadEverything = async (e) => {
   console.log("LoadEverything clicked!!!!!");
-  getRecents(token);
   getFavorites(token, currentTerm);
- // console.log(currentTerm);
   }
 
   const renderUser = () => {
@@ -138,7 +136,6 @@ function App() {
         for(let i=0; i<favorites.items.length; i++){
           favoritesInfo.push({key:i, duration: Math.round(favorites.items[i].duration_ms/1000),
           uri: favorites.items[i].uri});
-          console.log(favoritesInfo);
 
           options.push({key: i, name: favorites.items[i].name, artist: favorites.items[i].artists[0].name})
         }
@@ -150,13 +147,6 @@ function App() {
         }*/
         return (
           <div>
-            <label>Top Items</label><br></br>
-            <select>
-              {options.map(item => {
-                  return (<option key={item.key} value={item.key}>{item.name + " by "+ item.artist}</option>);
-              })}
-            </select>
-
            <input
                      type="number"
                      value={mins}
@@ -173,7 +163,6 @@ function App() {
                               />
 
             <button id="button3" onClick={() => createActualPlaylist(mins, secs, favoritesInfo)}> Create Playlist </button>
-
           </div>
         )
       }
@@ -253,6 +242,15 @@ function App() {
     return array;
   }
 
+  const reformatSeconds = (time) => {
+   let seconds = time % 60;
+   let minutes = Math.floor(time/60);
+
+   if (seconds < 10) seconds = "0"+seconds;
+   if (minutes < 10) minutes = "0"+minutes;
+   return minutes+":"+seconds;
+  }
+
  const createActualPlaylist = async(mins, secs, tracks) => {
     if (mins > 59 || mins < 0 || secs < 0 || secs > 59){
     alert("Not valid time");
@@ -277,14 +275,21 @@ function App() {
      }
 
      let pickedSongsString = usableSongs[pickedSongs[0]].uri;
+     let actualTime = trackLengths[pickedSongs[0]];
 
      for (let i=1; i<pickedSongs.length; i++){
        pickedSongsString += ',';
        pickedSongsString += usableSongs[pickedSongs[i]].uri;
+       actualTime += trackLengths[pickedSongs[i]];
+     }
+
+     if (actualTime / time < 0.96){
+     alert("ERROR: Unable to generate");
+     return;
      }
 
      let payload = { name: 'Your ' + mins +':'+secs+' playlist',
-     description: 'Generated with Musicglass', public: 'false' };
+     description: 'Duration: '+ reformatSeconds(actualTime) + '  |  Generated with Musicglass', public: 'false' };
 
      const playlistRes = await axios.post("https://api.spotify.com/v1/users/"+userID+"/playlists", payload, {
                   headers: {
@@ -316,7 +321,7 @@ function App() {
                 <button id="findUserButton" onClick={findUser}>Find User</button>
                 <button id="loadInfoButton" onClick={loadEverything}>Load Information</button>
                 <iframe src={playlistLink}
-                                        width="100%" height="380" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                                        width="50%" height="380" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                                         loading="lazy"></iframe></>
                 }
                 {renderRecent()}
