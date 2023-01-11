@@ -19,7 +19,6 @@ export default function SelectTerm() {
 
   return (
     <div>
-    <p>{`You selected ${value}`}</p>
       <select value={value} onChange={handleChange}>
         <option value="short">Short</option>
         <option value="medium">Medium</option>

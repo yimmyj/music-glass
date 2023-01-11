@@ -312,9 +312,12 @@ function App() {
   return (
     <div className="App">
         <header className="App-header">
-            <h1>Music Glass</h1>
+        <img className="title-img" src={require('./images/musicglass-logo.png')} alt="Logo"/>
+            <h1 className="page-title">Music Glass
+            </h1>
+
             {!token ?
-                <a href={`${AUTH_ENDPOINT}?${queryParams}`}>Login
+                <a className = "login-button" href={`${AUTH_ENDPOINT}?${queryParams}`}>Login
                     to Spotify</a>
                 : <><button onClick={logout}>Logout</button>
                 <SelectTerm />
