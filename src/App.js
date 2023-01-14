@@ -320,7 +320,6 @@ function App() {
                 <a className = "login-button" href={`${AUTH_ENDPOINT}?${queryParams}`}>Login
                     to Spotify</a>
                 : <><button onClick={logout}>Logout</button>
-                <SelectTerm />
                 <button id="findUserButton" onClick={findUser}>Find User</button>
                 <button id="loadInfoButton" onClick={loadEverything}>Load Information</button>
                 <iframe src={playlistLink}
