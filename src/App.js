@@ -6,7 +6,6 @@ import SelectTerm, {currentTerm} from './selectTerm';
 const querystring = require('querystring');
 
 function App() {
-  //const KSHEN_CLIENT_ID = "f7c40db261574146a1341b89f2d76bfb";
   const CLIENT_ID = "0e54d22e40f44995a3b7d456f93ce9dc";
 
   const REDIRECT_URI = "http://localhost:3000/";
